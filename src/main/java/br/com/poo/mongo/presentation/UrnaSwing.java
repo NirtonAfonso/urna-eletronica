@@ -4,16 +4,10 @@ import br.com.poo.mongo.common.exception.CandidatoInexistenteExcepition;
 import br.com.poo.mongo.common.exception.NumeroErradoException;
 import br.com.poo.mongo.common.vo.CandidatosVO;
 import br.com.poo.mongo.service.ServiceCandidato;
-import java.awt.Color;
-import java.awt.Dialog;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
-import java.util.concurrent.Delayed;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
@@ -21,7 +15,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.JDialog;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 
@@ -33,9 +26,7 @@ public class UrnaSwing extends javax.swing.JFrame {
 
     private StringBuilder numeroCandidato;
     private ServiceCandidato service;
-    ResultadoVotacao resultadoVotacao = new ResultadoVotacao();
-    private Timer timer;
-    int cont;
+    boolean votoBranco;
 
     //  private JTextField textFieldDigitos[];
     /**
@@ -641,6 +632,7 @@ public class UrnaSwing extends javax.swing.JFrame {
     private void lblBrancoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBrancoMousePressed
         lblBranco.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/branco_down.jpg"));
         tocarSom("SomTecla");
+        votoBranco = true;
     }//GEN-LAST:event_lblBrancoMousePressed
 
     private void lblBrancoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBrancoMouseReleased
@@ -660,21 +652,12 @@ public class UrnaSwing extends javax.swing.JFrame {
     private void lblConfirmaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblConfirmaMousePressed
         lblConfirma.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/confirma_down.jpg"));
         
-        if(numeroCandidato.toString().equals("99999")){
-            if (resultadoVotacao == null) {
-                    resultadoVotacao = new ResultadoVotacao();
-                    resultadoVotacao.setLocationRelativeTo(null);
-                    resultadoVotacao.setVisible(true);
-                    resultadoVotacao.setResizable(false);
-                } else {
-                    resultadoVotacao.setLocationRelativeTo(null);
-                    resultadoVotacao.setVisible(true);
-                    resultadoVotacao.setResizable(false);
-                }
-        }
+        /*if(numeroCandidato.toString().equals("99999")){
+        }*/
         
         service.votar(Integer.parseInt(numeroCandidato.toString()));
         tocarSom("inter");
+        
 
         new FinalizarVoto().start();
         //corrigir();
@@ -708,6 +691,7 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblFim.setText("FIM");
         lblFim.setVisible(false);
         lblMensageExeption.setVisible(false);
+        votoBranco = false;
     }
 
     private void imprimirPartido() {

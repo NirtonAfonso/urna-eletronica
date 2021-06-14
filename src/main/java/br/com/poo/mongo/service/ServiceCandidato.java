@@ -9,7 +9,6 @@ import br.com.poo.mongo.common.exception.CandidatoInexistenteExcepition;
 import br.com.poo.mongo.common.exception.NumeroErradoException;
 import br.com.poo.mongo.common.vo.CandidatosVO;
 import br.com.poo.mongo.persistence.Votacao;
-import br.com.poo.mongo.presentation.ResultadoVotacao;
 
 /**
  *

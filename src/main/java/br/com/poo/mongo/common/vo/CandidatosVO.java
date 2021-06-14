@@ -17,6 +17,9 @@ public class CandidatosVO extends PartidoVO {
     private int numeroCandidato;
     private int votos;
 
+    public CandidatosVO() {
+    }
+
     public String getNome() {
         return nome;
     }
@@ -56,4 +59,6 @@ public class CandidatosVO extends PartidoVO {
     public void setVotos(int votos) {
         this.votos = votos;
     }
+
+    
 }

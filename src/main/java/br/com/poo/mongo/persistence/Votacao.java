@@ -48,12 +48,12 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
     public void createCandidatoList() {
         try (DBCursor cursor = conexao().find()) {
 
-            while (cursor.hasNext()) {
+            for (int i = 0;i<cursor.length();i++) {
                 listCandidato.add(new CandidatosVO());
             }
-            
+
         }
-        
+
     }
 
     @Override
@@ -71,6 +71,8 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
                 }
                 candidato.setNome((String) infoCandidato.get("nome"));
                 candidato.setNumeroCandidato(((Double) infoCandidato.get("numero")).intValue());
+
+                return candidato;
             }
 
             return null;
@@ -87,11 +89,17 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
             if (infoCandidato == null) {
                 return null;
             }
-            CandidatosVO vo = new CandidatosVO();
 
-            vo.setPartido((String) infoCandidato.get("nomePartido"));
-            vo.setNumPartido(((Double) infoCandidato.get("numeroPartido")).intValue());
-            return vo;
+            for (CandidatosVO candidato : listCandidato) {
+                if (candidato.getNumPartido() == numero) {
+                    return candidato;
+                }
+                candidato.setPartido((String) infoCandidato.get("nomePartido"));
+                candidato.setNumPartido(((Double) infoCandidato.get("numeroPartido")).intValue());
+                return candidato;
+            }
+
+            return null;
         }
 
     }
@@ -103,6 +111,13 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
 
             this.votoCandidato = Integer.parseInt(infoCandidato.get("votos").toString());
             this.votoCandidato++;
+
+            for (CandidatosVO candidato : listCandidato) {
+                if (candidato.getNumeroCandidato() == numero) {
+                    candidato.setVotos(votoCandidato);
+                    break;
+                }
+            }
 
             conexao().update(new BasicDBObject("numero", numero), new BasicDBObject("$set", new BasicDBObject("votos", votoCandidato)));
 
