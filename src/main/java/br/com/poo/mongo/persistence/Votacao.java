@@ -26,8 +26,8 @@ import java.util.List;
 public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
 
     private int votoCandidato;
-    VotosVO votos = new VotosVO();
-    List<CandidatosVO> listCandidato = new ArrayList<>();
+    private VotosVO votos = new VotosVO();
+    private List<CandidatosVO> listCandidato = new ArrayList<>();
 
     public Votacao() {
         iniciarVotacao();
@@ -37,8 +37,8 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
     public DBCollection conexao() {
         MongoClient client = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
         DB bancoUrna = client.getDB("poo");
-        DBCollection candidato = bancoUrna.getCollection("candidatos");
-        return candidato;
+        DBCollection bdCandidato = bancoUrna.getCollection("candidatos");
+        return bdCandidato;
     }
 
     public void iniciarVotacao() {
@@ -48,7 +48,7 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
     public void createCandidatoList() {
         try (DBCursor cursor = conexao().find()) {
 
-            for (int i = 0;i<cursor.length();i++) {
+            for (int i = 0; i < cursor.length(); i++) {
                 listCandidato.add(new CandidatosVO());
             }
 
@@ -69,6 +69,7 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
                 if (candidato.getNumeroCandidato() == numero) {
                     return candidato;
                 }
+
                 candidato.setNome((String) infoCandidato.get("nome"));
                 candidato.setNumeroCandidato(((Double) infoCandidato.get("numero")).intValue());
 
@@ -105,24 +106,46 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
     }
 
     @Override
-    public int votar(int numero) {
+    public VotosVO votar(int numero) {
         try (DBCursor cursor = conexao().find(new BasicDBObject("numero", numero))) {
             DBObject infoCandidato = cursor.one();
 
+            if (infoCandidato == null) {
+                return null;
+            }
             this.votoCandidato = Integer.parseInt(infoCandidato.get("votos").toString());
             this.votoCandidato++;
-
             for (CandidatosVO candidato : listCandidato) {
                 if (candidato.getNumeroCandidato() == numero) {
                     candidato.setVotos(votoCandidato);
+                    System.out.println("Votos " + candidato.getVotos());
                     break;
                 }
             }
-
+            votos.setTotalVotos(votos.getTotalVotos() + 1);
             conexao().update(new BasicDBObject("numero", numero), new BasicDBObject("$set", new BasicDBObject("votos", votoCandidato)));
-
-            return votoCandidato;
         }
+        return votos;
+
+    }
+
+    @Override
+    public VotosVO votarNulo() {
+
+        votos.setVotosNulos(votos.getVotosNulos()+1);
+        votos.setTotalVotos(votos.getTotalVotos() + 1);
+
+        return votos;
+
+    }
+
+    @Override
+    public VotosVO votarBranco() {
+
+        votos.setVotosBrancos(votos.getVotosBrancos() + 1);
+        votos.setTotalVotos(votos.getTotalVotos() + 1);
+
+        return votos;
 
     }
 

@@ -2,7 +2,9 @@ package br.com.poo.mongo.presentation;
 
 import br.com.poo.mongo.common.exception.CandidatoInexistenteExcepition;
 import br.com.poo.mongo.common.exception.NumeroErradoException;
+import br.com.poo.mongo.common.exception.VotarCandidatoInexistenteException;
 import br.com.poo.mongo.common.vo.CandidatosVO;
+import br.com.poo.mongo.common.vo.VotosVO;
 import br.com.poo.mongo.service.ServiceCandidato;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -15,7 +17,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.Timer;
+import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 /**
@@ -27,6 +29,8 @@ public class UrnaSwing extends javax.swing.JFrame {
     private StringBuilder numeroCandidato;
     private ServiceCandidato service;
     boolean votoBranco;
+    private VotosVO votos = new VotosVO();
+    JFrame frame = new JFrame();
 
     //  private JTextField textFieldDigitos[];
     /**
@@ -55,12 +59,16 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblFim = new javax.swing.JLabel();
         lblImage = new javax.swing.JLabel();
         lblVereador = new javax.swing.JLabel();
+        lblVereadora = new javax.swing.JLabel();
         lblNumero = new javax.swing.JLabel();
         lblNome = new javax.swing.JLabel();
         lblPartido = new javax.swing.JLabel();
         lblNomeCandidato = new javax.swing.JLabel();
         lblNomePartido = new javax.swing.JLabel();
         lblMensageExeption = new javax.swing.JLabel();
+        lblVotoBranco = new javax.swing.JLabel();
+        lblSeuVoto = new javax.swing.JLabel();
+        lblMensageTipoVoto = new javax.swing.JLabel();
         UIManager.put("jProgressBar.background", new java.awt.Color(0,153,0));
         jProgressBar = new javax.swing.JProgressBar();
         jNumeros = new javax.swing.JPanel();
@@ -69,7 +77,6 @@ public class UrnaSwing extends javax.swing.JFrame {
         txtNumero4 = new javax.swing.JTextField();
         txtNumero3 = new javax.swing.JTextField();
         txtNumero = new javax.swing.JTextField();
-        lblSeuVoto = new javax.swing.JLabel();
         jInfoConfirma = new javax.swing.JPanel();
         lblInfoTeclas = new javax.swing.JLabel();
         lblInfoConfirma = new javax.swing.JLabel();
@@ -142,6 +149,11 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblVereador.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanelInfoVereador.add(lblVereador, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, -1, -1));
 
+        lblVereadora.setFont(new java.awt.Font("Arial Narrow", 1, 20)); // NOI18N
+        lblVereadora.setText(bundle.getString("UrnaSwing.lblVereadora.text")); // NOI18N
+        lblVereadora.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanelInfoVereador.add(lblVereadora, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, -1, -1));
+
         lblNumero.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         lblNumero.setText(bundle.getString("UrnaSwing.lblNumero.text")); // NOI18N
         lblNumero.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -171,6 +183,20 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblMensageExeption.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         lblMensageExeption.setText(bundle.getString("UrnaSwing.lblMensageExeption.text")); // NOI18N
         jPanelInfoVereador.add(lblMensageExeption, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 350, 360, 30));
+
+        lblVotoBranco.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
+        lblVotoBranco.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblVotoBranco.setText(bundle.getString("UrnaSwing.lblVotoBranco.text")); // NOI18N
+        jPanelInfoVereador.add(lblVotoBranco, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 325, 410, 90));
+
+        lblSeuVoto.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblSeuVoto.setText(bundle.getString("UrnaSwing.lblSeuVoto.text")); // NOI18N
+        lblSeuVoto.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanelInfoVereador.add(lblSeuVoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 130, 30));
+
+        lblMensageTipoVoto.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
+        lblMensageTipoVoto.setText(bundle.getString("UrnaSwing.lblMensageTipoVoto.text")); // NOI18N
+        jPanelInfoVereador.add(lblMensageTipoVoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 410, 350, 50));
 
         jProgressBar.setBackground(new java.awt.Color(0, 153, 0));
         jProgressBar.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
@@ -268,11 +294,6 @@ public class UrnaSwing extends javax.swing.JFrame {
         jNumeros.add(txtNumero, gridBagConstraints);
 
         jPanelInfoVereador.add(jNumeros, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 310, -1, 40));
-
-        lblSeuVoto.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblSeuVoto.setText(bundle.getString("UrnaSwing.lblSeuVoto.text")); // NOI18N
-        lblSeuVoto.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jPanelInfoVereador.add(lblSeuVoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 130, 30));
 
         jInfoConfirma.setBackground(new java.awt.Color(214, 214, 214));
         jInfoConfirma.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -518,15 +539,13 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblTopo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/arquivo/images/urna/topo.jpg"))); // NOI18N
         jTeclado.add(lblTopo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        Camadas.add(jTeclado, new org.netbeans.lib.awtextra.AbsoluteConstraints(642, 11, 480, 580));
+        Camadas.add(jTeclado, new org.netbeans.lib.awtextra.AbsoluteConstraints(642, 11, 370, 580));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(Camadas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(Camadas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -539,10 +558,13 @@ public class UrnaSwing extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+
     private void lblN1MousePressed(MouseEvent evt) {//GEN-FIRST:event_lblN1MousePressed
         lblN1.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/n1_down.jpg"));
-        testeIndiceNumeroCandidato("1");
+            testeIndiceNumeroCandidato("1");
+
     }//GEN-LAST:event_lblN1MousePressed
+
 
     private void lblN1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblN1MouseReleased
         lblN1.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/n1.jpg"));
@@ -632,7 +654,14 @@ public class UrnaSwing extends javax.swing.JFrame {
     private void lblBrancoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBrancoMousePressed
         lblBranco.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/branco_down.jpg"));
         tocarSom("SomTecla");
+        jNumeros.setVisible(false);
+        lblVotoBranco.setText("VOTO EM BRANCO");
+        lblSeuVoto.setVisible(true);
+        lblVotoBranco.setVisible(true);
         votoBranco = true;
+        jInfoConfirma.setVisible(true);
+        lblMensageTipoVoto.setVisible(false);
+        lblVereadora.setVisible(false);
     }//GEN-LAST:event_lblBrancoMousePressed
 
     private void lblBrancoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBrancoMouseReleased
@@ -645,27 +674,33 @@ public class UrnaSwing extends javax.swing.JFrame {
         corrigir();
     }//GEN-LAST:event_lblCorrigeMousePressed
 
+
     private void lblCorrigeMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCorrigeMouseReleased
         lblCorrige.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/corrige.jpg"));
     }//GEN-LAST:event_lblCorrigeMouseReleased
 
     private void lblConfirmaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblConfirmaMousePressed
         lblConfirma.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/confirma_down.jpg"));
-        
+
         /*if(numeroCandidato.toString().equals("99999")){
-        }*/
-        
-        service.votar(Integer.parseInt(numeroCandidato.toString()));
+            }*/
+        if (votoBranco) {
+            
+            System.out.println("Quantidade Votos: "+ service.votarBranco().getVotosBrancos());
+            
+        } else {
+            try {
+                service.votar(Integer.parseInt(numeroCandidato.toString()));
+            } catch (VotarCandidatoInexistenteException ex) {
+
+                service.votarNulo();
+            }
+        }
         tocarSom("inter");
-        
 
         new FinalizarVoto().start();
-        //corrigir();
-        //iniciarVotacao();
-
-        //finalizarVoto();
-        //System.out.println("VOTOU Candidato: " + vo.getNumeroCandidato());
-        // System.out.println("Quantidade Votos: " + vo.getVotos());
+        
+        
 
     }//GEN-LAST:event_lblConfirmaMousePressed
 
@@ -691,7 +726,9 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblFim.setText("FIM");
         lblFim.setVisible(false);
         lblMensageExeption.setVisible(false);
+        lblVotoBranco.setVisible(false);
         votoBranco = false;
+        lblMensageTipoVoto.setVisible(false);
     }
 
     private void imprimirPartido() {
@@ -704,6 +741,8 @@ public class UrnaSwing extends javax.swing.JFrame {
         } catch (NumeroErradoException ex) {
             lblMensageExeption.setVisible(true);
             lblMensageExeption.setText(ex.getMessage());
+            lblMensageTipoVoto.setVisible(true);
+            lblMensageTipoVoto.setText("VOTO NULO");
         }
 
     }
@@ -712,6 +751,13 @@ public class UrnaSwing extends javax.swing.JFrame {
         CandidatosVO vo = null;
         try {
             vo = service.getInfoCandidatos(Integer.parseInt(numeroCandidato.toString()));
+            if (vo.getNumeroCandidato() == 91003 || vo.getNumeroCandidato() == 92003
+                    || vo.getNumeroCandidato() == 93003 || vo.getNumeroCandidato() == 94001
+                    || vo.getNumeroCandidato() == 94002 || vo.getNumeroCandidato() == 95002
+                    || vo.getNumeroCandidato() == 95003) {
+                lblVereadora.setVisible(true);
+
+            }
             lblImage.setVisible(true);
             lblImage.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/candidatos/" + vo.getNumeroCandidato() + ".png"));
             lblNomeCandidato.setText(vo.getNome());
@@ -719,6 +765,8 @@ public class UrnaSwing extends javax.swing.JFrame {
             lblNome.setVisible(false);
             lblMensageExeption.setVisible(true);
             lblMensageExeption.setText(ex.getMessage());
+            lblMensageTipoVoto.setVisible(true);
+            lblMensageTipoVoto.setText("VOTO NULO");
         }
 
     }
@@ -741,6 +789,10 @@ public class UrnaSwing extends javax.swing.JFrame {
         jInfoConfirma.setVisible(false);
         lblSeuVoto.setVisible(false);
         lblMensageExeption.setVisible(false);
+        lblVotoBranco.setVisible(false);
+        jNumeros.setVisible(true);
+        lblMensageTipoVoto.setVisible(false);
+        lblVereadora.setVisible(false);
     }
 
     private void testeIndiceNumeroCandidato(String auxNumCandidato) {
@@ -776,18 +828,19 @@ public class UrnaSwing extends javax.swing.JFrame {
             tocarSom("SomTecla");
             txtNumero4.setText(auxNumCandidato);
             numeroCandidato.append(auxNumCandidato);
+
             try {
-                if(service.getInfoCandidatos(Integer.parseInt(numeroCandidato.toString()))!=null){
-                  imprimirCandidato();
-                  lblNome.setVisible(true);
+                if (service.getInfoCandidatos(Integer.parseInt(numeroCandidato.toString())) != null) {
+                    imprimirCandidato();
+                    lblNome.setVisible(true);
                 }
-                
+
             } catch (CandidatoInexistenteExcepition ex) {
                 imprimirCandidato();
             }
-            
-        }
 
+        }
+       
     }
 
     private class FinalizarVoto extends Thread {
@@ -802,12 +855,12 @@ public class UrnaSwing extends javax.swing.JFrame {
 
                 try {
                     if (jProgressBar.getValue() < 20 || (jProgressBar.getValue() < 85 && jProgressBar.getValue() >= 50)) {
-                        sleep(15);
+                        sleep(10);
 
                         //jProgressBar.setString(jProgressBar.getValue() + "");
                     }
                     if (jProgressBar.getValue() >= 70 || (jProgressBar.getValue() >= 20 && jProgressBar.getValue() < 50)) {
-                        sleep(8);
+                        sleep(2);
                         //jProgressBar.setValue(jProgressBar.getValue() + 1);
                         //jProgressBar.setStringPainted(true);
                         // jProgressBar.setString(jProgressBar.getValue() + "");
@@ -821,7 +874,7 @@ public class UrnaSwing extends javax.swing.JFrame {
             jProgressBar.setVisible(false);
             try {
 
-                sleep(3000);
+                sleep(2000);
 
             } catch (InterruptedException ex) {
                 Logger.getLogger(UrnaSwing.class.getName()).log(Level.SEVERE, null, ex);
@@ -847,6 +900,11 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblSeuVoto.setVisible(false);
         lblVereador.setVisible(false);
         lblImage.setVisible(false);
+        lblSeuVoto.setVisible(false);
+        lblMensageExeption.setVisible(false);
+        lblVotoBranco.setVisible(false);
+        lblMensageTipoVoto.setVisible(false);
+        lblVereadora.setVisible(false);
     }
 
     private void tocarSom(String nomeSom) {
@@ -916,6 +974,7 @@ public class UrnaSwing extends javax.swing.JFrame {
     private javax.swing.JLabel lblLadoDirTec;
     private javax.swing.JLabel lblLadoEsqTec;
     private javax.swing.JLabel lblMensageExeption;
+    private javax.swing.JLabel lblMensageTipoVoto;
     private javax.swing.JLabel lblN0;
     private javax.swing.JLabel lblN1;
     private javax.swing.JLabel lblN2;
@@ -937,6 +996,8 @@ public class UrnaSwing extends javax.swing.JFrame {
     private javax.swing.JLabel lblTela;
     private javax.swing.JLabel lblTopo;
     private javax.swing.JLabel lblVereador;
+    private javax.swing.JLabel lblVereadora;
+    private javax.swing.JLabel lblVotoBranco;
     private javax.swing.JTextField txtNumero;
     private javax.swing.JTextField txtNumero1;
     private javax.swing.JTextField txtNumero2;

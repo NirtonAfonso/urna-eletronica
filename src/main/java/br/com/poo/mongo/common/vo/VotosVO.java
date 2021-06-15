@@ -11,7 +11,7 @@ package br.com.poo.mongo.common.vo;
  */
 public class VotosVO {
     private int votosBrancos;
-    private int votosNumos;
+    private int votosNulos;
     private int totalVotos;
 
     public int getVotosBrancos() {
@@ -22,12 +22,12 @@ public class VotosVO {
         this.votosBrancos = votosBrancos;
     }
 
-    public int getVotosNumos() {
-        return votosNumos;
+    public int getVotosNulos() {
+        return votosNulos;
     }
 
-    public void setVotosNumos(int votosNumos) {
-        this.votosNumos = votosNumos;
+    public void setVotosNulos(int votosNumos) {
+        this.votosNulos = votosNumos;
     }
 
     public int getTotalVotos() {
