@@ -10,6 +10,8 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
@@ -30,7 +32,9 @@ public class UrnaSwing extends javax.swing.JFrame {
     private ServiceCandidato service;
     boolean votoBranco;
     private VotosVO votos = new VotosVO();
+    private List<CandidatosVO> listCandidato = new ArrayList();
     JFrame frame = new JFrame();
+    private int indexList = 0;
 
     //  private JTextField textFieldDigitos[];
     /**
@@ -218,6 +222,7 @@ public class UrnaSwing extends javax.swing.JFrame {
 
         txtNumero2.setEditable(false);
         txtNumero2.setBackground(new java.awt.Color(214, 214, 214));
+        txtNumero2.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
         txtNumero2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtNumero2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txtNumero2.setFocusable(false);
@@ -233,6 +238,7 @@ public class UrnaSwing extends javax.swing.JFrame {
 
         txtNumero1.setEditable(false);
         txtNumero1.setBackground(new java.awt.Color(214, 214, 214));
+        txtNumero1.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
         txtNumero1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtNumero1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txtNumero1.setFocusable(false);
@@ -248,6 +254,7 @@ public class UrnaSwing extends javax.swing.JFrame {
 
         txtNumero4.setEditable(false);
         txtNumero4.setBackground(new java.awt.Color(214, 214, 214));
+        txtNumero4.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
         txtNumero4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtNumero4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txtNumero4.setFocusable(false);
@@ -264,6 +271,7 @@ public class UrnaSwing extends javax.swing.JFrame {
 
         txtNumero3.setEditable(false);
         txtNumero3.setBackground(new java.awt.Color(214, 214, 214));
+        txtNumero3.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
         txtNumero3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtNumero3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txtNumero3.setFocusable(false);
@@ -279,7 +287,9 @@ public class UrnaSwing extends javax.swing.JFrame {
 
         txtNumero.setEditable(false);
         txtNumero.setBackground(new java.awt.Color(214, 214, 214));
+        txtNumero.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
         txtNumero.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtNumero.setText(bundle.getString("UrnaSwing.txtNumero.text")); // NOI18N
         txtNumero.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txtNumero.setFocusable(false);
         txtNumero.setRequestFocusEnabled(false);
@@ -561,7 +571,7 @@ public class UrnaSwing extends javax.swing.JFrame {
 
     private void lblN1MousePressed(MouseEvent evt) {//GEN-FIRST:event_lblN1MousePressed
         lblN1.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/n1_down.jpg"));
-            testeIndiceNumeroCandidato("1");
+        testeIndiceNumeroCandidato("1");
 
     }//GEN-LAST:event_lblN1MousePressed
 
@@ -682,25 +692,34 @@ public class UrnaSwing extends javax.swing.JFrame {
     private void lblConfirmaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblConfirmaMousePressed
         lblConfirma.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/confirma_down.jpg"));
 
-        /*if(numeroCandidato.toString().equals("99999")){
-            }*/
+        if(numeroCandidato.toString().equals("99999")){
+            System.out.println("\n*********************************************\n");
+            System.out.println("## Total votos: " + votos.getTotalVotos() + "\n");
+            System.out.println("## Total votos Brancos: " + votos.getVotosBrancos() + "\n");
+            System.out.println("## Total votos Nulos: " + votos.getVotosNulos());
+            return;
+            }
         if (votoBranco) {
-            
-            System.out.println("Quantidade Votos: "+ service.votarBranco().getVotosBrancos());
-            
+
+            votos.votarBranco();
+            votos.somaTotalVotos();
+
         } else {
             try {
+                
                 service.votar(Integer.parseInt(numeroCandidato.toString()));
+                listCandidato.get(indexList).receberVoto();
+                votos.somaTotalVotos();
             } catch (VotarCandidatoInexistenteException ex) {
 
-                service.votarNulo();
+                votos.somaTotalVotos();
+                votos.votarNulo();
             }
         }
         tocarSom("inter");
 
         new FinalizarVoto().start();
-        
-        
+
 
     }//GEN-LAST:event_lblConfirmaMousePressed
 
@@ -729,13 +748,22 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblVotoBranco.setVisible(false);
         votoBranco = false;
         lblMensageTipoVoto.setVisible(false);
+        lblVereadora.setVisible(false);
     }
 
     private void imprimirPartido() {
-        CandidatosVO vo = null;
+
         try {
-            vo = service.getInfoPartido(Integer.parseInt(numeroCandidato.toString()));
-            lblNomePartido.setText(vo.getPartido());
+            listCandidato.add(service.getInfoPartido(Integer.parseInt(numeroCandidato.toString())));
+            for (CandidatosVO candidato : listCandidato) {
+                if (candidato.getNumPartido() == Integer.parseInt(numeroCandidato.toString())) {
+                    lblNomePartido.setText(candidato.getPartido());
+                    indexList = indexList;
+                    break;
+                }
+                indexList++;
+            }
+
             lblSeuVoto.setVisible(true);
 
         } catch (NumeroErradoException ex) {
@@ -748,19 +776,20 @@ public class UrnaSwing extends javax.swing.JFrame {
     }
 
     private void imprimirCandidato() {
-        CandidatosVO vo = null;
         try {
-            vo = service.getInfoCandidatos(Integer.parseInt(numeroCandidato.toString()));
-            if (vo.getNumeroCandidato() == 91003 || vo.getNumeroCandidato() == 92003
-                    || vo.getNumeroCandidato() == 93003 || vo.getNumeroCandidato() == 94001
-                    || vo.getNumeroCandidato() == 94002 || vo.getNumeroCandidato() == 95002
-                    || vo.getNumeroCandidato() == 95003) {
+
+            listCandidato.add(indexList, service.getInfoCandidatos(Integer.parseInt(numeroCandidato.toString())));
+
+            if (listCandidato.get(indexList).getNumeroCandidato() == 91003 || listCandidato.get(indexList).getNumeroCandidato() == 92003
+                    || listCandidato.get(indexList).getNumeroCandidato() == 93003 || listCandidato.get(indexList).getNumeroCandidato() == 94001
+                    || listCandidato.get(indexList).getNumeroCandidato() == 94002 || listCandidato.get(indexList).getNumeroCandidato() == 95002
+                    || listCandidato.get(indexList).getNumeroCandidato() == 95003) {
                 lblVereadora.setVisible(true);
 
             }
             lblImage.setVisible(true);
-            lblImage.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/candidatos/" + vo.getNumeroCandidato() + ".png"));
-            lblNomeCandidato.setText(vo.getNome());
+            lblImage.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/candidatos/" + listCandidato.get(indexList).getNumeroCandidato() + ".png"));
+            lblNomeCandidato.setText(listCandidato.get(indexList).getNome());
         } catch (CandidatoInexistenteExcepition ex) {
             lblNome.setVisible(false);
             lblMensageExeption.setVisible(true);
@@ -840,7 +869,7 @@ public class UrnaSwing extends javax.swing.JFrame {
             }
 
         }
-       
+
     }
 
     private class FinalizarVoto extends Thread {

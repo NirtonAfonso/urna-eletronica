@@ -20,7 +20,6 @@ public class ServiceCandidato {
 
     Votacao votacao = new Votacao();
     private VotosVO votos = new VotosVO();
-    private CandidatosVO listCandidato = new CandidatosVO();
     
 
     public CandidatosVO getInfoCandidatos(int numero) throws CandidatoInexistenteExcepition {
@@ -29,7 +28,7 @@ public class ServiceCandidato {
             throw new CandidatoInexistenteExcepition("CANDIDATO INEXISTENTE");
         }
         
-        return listCandidato;
+        return votacao.getInfoCandidatos(numero);
     }
 
     public CandidatosVO getInfoPartido(int numero) throws NumeroErradoException {
@@ -38,7 +37,7 @@ public class ServiceCandidato {
             throw new NumeroErradoException("NÚMERO ERRADO");
         }
 
-        return listCandidato;
+        return votacao.getInfoPartido(numero);
     }
 
     public VotosVO votar(int numero) throws VotarCandidatoInexistenteException {
@@ -48,14 +47,22 @@ public class ServiceCandidato {
         return votos;
     }
 
-    public VotosVO votarNulo() {
-        return votacao.votarNulo();
+    /*public VotosVO votarNulo() {
+
+        votos.setVotosNulos(votos.getVotosNulos() + 1);
+        votos.setTotalVotos(votos.getTotalVotos() + 1);
+
+        return votos;
+
     }
 
     public VotosVO votarBranco() {
 
-        return votacao.votarBranco();
+        votos.setVotosBrancos(votos.getVotosBrancos() + 1);
+        votos.setTotalVotos(votos.getTotalVotos() + 1);
 
-    }
+        return votos;
+
+    }*/
 
 }

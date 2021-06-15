@@ -56,8 +56,8 @@ public class CandidatosVO extends PartidoVO {
         return votos;
     }
 
-    public void setVotos(int votos) {
-        this.votos = votos;
+    public void receberVoto() {
+        this.votos++;
     }
 
     

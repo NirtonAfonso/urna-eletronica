@@ -18,24 +18,24 @@ public class VotosVO {
         return votosBrancos;
     }
 
-    public void setVotosBrancos(int votosBrancos) {
-        this.votosBrancos = votosBrancos;
+    public void votarBranco() {
+        this.votosBrancos++;
     }
 
     public int getVotosNulos() {
         return votosNulos;
     }
 
-    public void setVotosNulos(int votosNumos) {
-        this.votosNulos = votosNumos;
+    public void votarNulo() {
+        this.votosNulos++;
     }
 
     public int getTotalVotos() {
         return totalVotos;
     }
 
-    public void setTotalVotos(int totalVotos) {
-        this.totalVotos = totalVotos;
+    public void somaTotalVotos() {
+        this.totalVotos++;
     }
     
     

@@ -27,11 +27,11 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
 
     private int votoCandidato;
     private VotosVO votos = new VotosVO();
-    private List<CandidatosVO> listCandidato = new ArrayList<>();
+    private CandidatosVO candidato = new CandidatosVO();
 
     public Votacao() {
         iniciarVotacao();
-        createCandidatoList();
+
     }
 
     public DBCollection conexao() {
@@ -45,45 +45,25 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
         conexao().updateMulti(new BasicDBObject("votos", new BasicDBObject("$gte", 0)), new BasicDBObject("$set", new BasicDBObject("votos", 0)));
     }
 
-    public void createCandidatoList() {
-        try (DBCursor cursor = conexao().find()) {
-
-            for (int i = 0; i < cursor.length(); i++) {
-                listCandidato.add(new CandidatosVO());
-            }
-
-        }
-
-    }
-
     @Override
     public CandidatosVO getInfoCandidatos(int numero) {
-
+        
         try (DBCursor cursor = conexao().find(new BasicDBObject("numero", numero))) {
             DBObject infoCandidato = cursor.one();
 
             if (infoCandidato == null) {
                 return null;
             }
-            for (CandidatosVO candidato : listCandidato) {
-                if (candidato.getNumeroCandidato() == numero) {
-                    return candidato;
-                }
-
-                candidato.setNome((String) infoCandidato.get("nome"));
-                candidato.setNumeroCandidato(((Double) infoCandidato.get("numero")).intValue());
-
-                return candidato;
-            }
-
-            return null;
+            candidato.setNome((String) infoCandidato.get("nome"));
+            candidato.setNumeroCandidato(((Double) infoCandidato.get("numero")).intValue());
+            return candidato;
         }
 
     }
 
     @Override
     public CandidatosVO getInfoPartido(int numero) {
-
+        //CandidatosVO candidato = new CandidatosVO();
         try (DBCursor cursor = conexao().find(new BasicDBObject("numeroPartido", numero))) {
             DBObject infoCandidato = cursor.one();
 
@@ -91,16 +71,10 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
                 return null;
             }
 
-            for (CandidatosVO candidato : listCandidato) {
-                if (candidato.getNumPartido() == numero) {
-                    return candidato;
-                }
-                candidato.setPartido((String) infoCandidato.get("nomePartido"));
-                candidato.setNumPartido(((Double) infoCandidato.get("numeroPartido")).intValue());
-                return candidato;
-            }
+            candidato.setPartido((String) infoCandidato.get("nomePartido"));
+            candidato.setNumPartido(((Double) infoCandidato.get("numeroPartido")).intValue());
+            return candidato;
 
-            return null;
         }
 
     }
@@ -115,38 +89,9 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
             }
             this.votoCandidato = Integer.parseInt(infoCandidato.get("votos").toString());
             this.votoCandidato++;
-            for (CandidatosVO candidato : listCandidato) {
-                if (candidato.getNumeroCandidato() == numero) {
-                    candidato.setVotos(votoCandidato);
-                    System.out.println("Votos " + candidato.getVotos());
-                    break;
-                }
-            }
-            votos.setTotalVotos(votos.getTotalVotos() + 1);
+
             conexao().update(new BasicDBObject("numero", numero), new BasicDBObject("$set", new BasicDBObject("votos", votoCandidato)));
+            return votos;
         }
-        return votos;
-
     }
-
-    @Override
-    public VotosVO votarNulo() {
-
-        votos.setVotosNulos(votos.getVotosNulos()+1);
-        votos.setTotalVotos(votos.getTotalVotos() + 1);
-
-        return votos;
-
-    }
-
-    @Override
-    public VotosVO votarBranco() {
-
-        votos.setVotosBrancos(votos.getVotosBrancos() + 1);
-        votos.setTotalVotos(votos.getTotalVotos() + 1);
-
-        return votos;
-
-    }
-
 }

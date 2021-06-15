@@ -16,7 +16,5 @@ public interface IVotacaoCandidato {
     
     public VotosVO votar(int numero);
     
-    public VotosVO votarNulo();
     
-    public VotosVO votarBranco();
 }
