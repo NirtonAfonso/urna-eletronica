@@ -1,15 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/** Classe criada para receber os candidatos do Banco de dados e armazenar na memoria
+ * através de um ArrayList para pooder fazer a manipulação dos votos
+ *
  */
 package br.com.poo.mongo.common.vo;
 
-import br.com.poo.mongo.common.interfaces.IVotacaoCandidato;
-
 /**
+ * @author Nirton Afonso
  *
- * @author nirto
  */
 public class CandidatosVO extends PartidoVO {
 
@@ -60,20 +57,18 @@ public class CandidatosVO extends PartidoVO {
         this.votos = votos;
     }
 
-    
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder imprimirCandidatos = new StringBuilder();
-        
+
         imprimirCandidatos.append("Candidato: ");
         imprimirCandidatos.append(getNome());
         imprimirCandidatos.append("\n");
         imprimirCandidatos.append("Votos: ");
         imprimirCandidatos.append(getVotos());
         imprimirCandidatos.append("");
-        
+
         return imprimirCandidatos.toString();
     }
 
-    
 }

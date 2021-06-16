@@ -1,3 +1,8 @@
+/**
+ * Interfac principal da simulação de uma Urna Eletrônica
+ * Nessa classe temos todas as coneções e métodos para o funcionamento do programa,
+ * desde a alteração de imagens de candidatos, sons, chamada do gráfico.
+ */
 package br.com.poo.mongo.presentation;
 
 import br.com.poo.mongo.common.exception.CandidatoInexistenteExcepition;
@@ -24,10 +29,12 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.UIManager;
 import static java.lang.Thread.sleep;
 import java.text.DecimalFormat;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
+ * @author Nirton Afonso
  *
- * @author nirto
  */
 public class UrnaSwing extends javax.swing.JFrame {
 
@@ -43,6 +50,8 @@ public class UrnaSwing extends javax.swing.JFrame {
     private StringBuilder numeroCandidato;
     boolean votoBranco;
     private Santinho santinho = new Santinho();
+    private GraficoVotos grafico = new GraficoVotos();
+    private JFrame frame = new JFrame();
 
     /**
      * Creates new form UrnaSwing
@@ -141,6 +150,7 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblCandidatoEleito = new javax.swing.JLabel();
         lblVotosApurados = new javax.swing.JLabel();
         lblVotosNulos = new javax.swing.JLabel();
+        btnGrafico = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("br/com/poo/mongo/presentation/Bundle"); // NOI18N
@@ -619,7 +629,6 @@ public class UrnaSwing extends javax.swing.JFrame {
         jTextFinal1.setText(bundle.getString("UrnaSwing.jTextFinal1.text")); // NOI18N
         jTextFinal1.setMaximumSize(new java.awt.Dimension(164, 74));
         jTextFinal1.setMinimumSize(new java.awt.Dimension(164, 74));
-        jTextFinal1.setPreferredSize(new java.awt.Dimension(164, 74));
         jScrollPane2.setViewportView(jTextFinal1);
 
         jTextFinal2.setEditable(false);
@@ -628,7 +637,6 @@ public class UrnaSwing extends javax.swing.JFrame {
         jTextFinal2.setText(bundle.getString("UrnaSwing.jTextFinal2.text")); // NOI18N
         jTextFinal2.setMaximumSize(new java.awt.Dimension(164, 74));
         jTextFinal2.setMinimumSize(new java.awt.Dimension(164, 74));
-        jTextFinal2.setPreferredSize(new java.awt.Dimension(164, 74));
         jScrollPane3.setViewportView(jTextFinal2);
 
         jTextFinal3.setEditable(false);
@@ -637,7 +645,6 @@ public class UrnaSwing extends javax.swing.JFrame {
         jTextFinal3.setText(bundle.getString("UrnaSwing.jTextFinal3.text")); // NOI18N
         jTextFinal3.setMaximumSize(new java.awt.Dimension(164, 74));
         jTextFinal3.setMinimumSize(new java.awt.Dimension(164, 74));
-        jTextFinal3.setPreferredSize(new java.awt.Dimension(164, 74));
         jScrollPane4.setViewportView(jTextFinal3);
 
         jTextFinal4.setEditable(false);
@@ -647,7 +654,6 @@ public class UrnaSwing extends javax.swing.JFrame {
         jTextFinal4.setMaximumSize(new java.awt.Dimension(164, 74));
         jTextFinal4.setMinimumSize(new java.awt.Dimension(164, 74));
         jTextFinal4.setName(""); // NOI18N
-        jTextFinal4.setPreferredSize(new java.awt.Dimension(164, 74));
         jScrollPane5.setViewportView(jTextFinal4);
 
         lblApuracaoVotos.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -703,6 +709,14 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblVotosNulos.setMinimumSize(new java.awt.Dimension(8, 17));
         lblVotosNulos.setPreferredSize(new java.awt.Dimension(8, 17));
 
+        btnGrafico.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnGrafico.setText(bundle.getString("UrnaSwing.btnGrafico.text")); // NOI18N
+        btnGrafico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGraficoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -719,58 +733,64 @@ public class UrnaSwing extends javax.swing.JFrame {
                                 .addComponent(lblPartido92))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(lblPartido91)))
-                .addGap(59, 59, 59)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane3)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblPartido91))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(lblPartido93))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addComponent(lblPartido94)))
+                        .addContainerGap()
+                        .addComponent(btnGrafico, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblTitleCandidatoEleito)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblCandidatoEleito, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblTotalVotosApurados)
-                                    .addComponent(lblTotalVotosNulos)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(3, 3, 3)
-                                        .addComponent(lblTotalVotosBrancos)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lblVotosApurados, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(20, 20, 20)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblVotosBrancos, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(lblVotosNulos, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(lblApuracaoVotos, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(lblPartido95, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblApuracaoVotos, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(320, 320, 320))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane3)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addComponent(lblPartido93))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(lblPartido94)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(lblTitleCandidatoEleito)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblCandidatoEleito, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblTotalVotosApurados)
+                                            .addComponent(lblTotalVotosNulos)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(3, 3, 3)
+                                                .addComponent(lblTotalVotosBrancos)))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(18, 18, 18)
+                                                .addComponent(lblVotosApurados, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(20, 20, 20)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(lblVotosNulos, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                                                    .addComponent(lblVotosBrancos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                                .addContainerGap(34, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addComponent(lblPartido95, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(lblApuracaoVotos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addGap(25, 25, 25)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnGrafico)
+                    .addComponent(lblApuracaoVotos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(45, 45, 45)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -832,7 +852,12 @@ public class UrnaSwing extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-
+    /**
+     * Métodos lblN(numero do botao)MousePressed usados para registrar o click
+     * do mouse nos botões do teclado, assim registrando seu determiado valor e
+     * mudando sua imagem para um botao pressionado.
+     *
+     */
     private void lblN1MousePressed(MouseEvent evt) {//GEN-FIRST:event_lblN1MousePressed
         lblN1.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/n1_down.jpg"));
         testarIndiceNumeroCandidato("1");
@@ -925,6 +950,11 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblN0.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/n0.jpg"));
     }//GEN-LAST:event_lblN0MouseReleased
 
+    /**
+     * Após clicar com o mouse no botão BRANCO, ele ira mudar a interface
+     * notificando que seu voto sera branco.
+     *
+     */
     private void lblBrancoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBrancoMousePressed
         lblBranco.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/branco_down.jpg"));
         tocarSom("SomTecla");
@@ -932,7 +962,7 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblVotoBranco.setText("VOTO EM BRANCO");
         lblSeuVoto.setVisible(true);
         lblVotoBranco.setVisible(true);
-        votoBranco = true;
+        votoBranco = true;                          // foi criada essa variavél booleana para poder fazer a virificação quando for confirmar o voto
         jInfoConfirma.setVisible(true);
         lblMensageTipoVoto.setVisible(false);
         lblVereadora.setVisible(false);
@@ -942,6 +972,10 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblBranco.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/branco.jpg"));
     }//GEN-LAST:event_lblBrancoMouseReleased
 
+    /**
+     * Limpa toda a tela da urna, podendo realizar asism um voto certo, caso
+     * tenha escolhido o candidato ou digitado o numero errado.
+     */
     private void lblCorrigeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCorrigeMousePressed
         lblCorrige.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/corrige_down.jpg"));
         tocarSom("SomTecla");
@@ -953,20 +987,22 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblCorrige.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/corrige.jpg"));
     }//GEN-LAST:event_lblCorrigeMouseReleased
 
+    /**
+     * Botão responsavel para fazer a validação do voto.
+     */
     private void lblConfirmaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblConfirmaMousePressed
         lblConfirma.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/confirma_down.jpg"));
 
-        if (numeroCandidato.toString().equals("99999")) {
-           new ImprimirResultado().start();
+        if (numeroCandidato.toString().equals("99999")) {       //Condição para finalizar a votação e imprimir o resultado
+            new ImprimirResultado().start();
             return;
         }
         if (votoBranco) {
             votos.votarBranco();
             votos.somaTotalVotos();
         } else {
-            try {
+            try {                                               //Try usado para saber se o voto vai para um candidato ou se vai ser um voto nulo
                 service.votar(Integer.parseInt(numeroCandidato.toString()));
-                // auxCandidato.receberVoto();
                 votos.somaTotalVotos();
             } catch (VotarCandidatoInexistenteException ex) {
                 votos.somaTotalVotos();
@@ -983,6 +1019,9 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblConfirma.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/confirma.jpg"));
     }//GEN-LAST:event_lblConfirmaMouseReleased
 
+    /**
+     * Botão de ajuda para abrir uma nova interface com os "santinhhos".
+     */
     private void lblAjudaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAjudaMouseClicked
         santinho = new Santinho();
         santinho.setLocationRelativeTo(null);
@@ -990,6 +1029,30 @@ public class UrnaSwing extends javax.swing.JFrame {
         santinho.setResizable(false);
     }//GEN-LAST:event_lblAjudaMouseClicked
 
+    /**
+     * Botão responsavel em abrir uma nova tela com o gráfico da votação.
+     */
+    private void btnGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGraficoActionPerformed
+        if (votos.getTotalVotos() != 0) {
+            if (grafico == null) {
+                grafico = new GraficoVotos();
+                grafico.setVisible(true);
+                grafico.imprimirGrafico(ordenarLista(), votos);
+            } else {
+                grafico.setVisible(true);
+                grafico.setState(GraficoVotos.NORMAL);
+                grafico.imprimirGrafico(ordenarLista(), votos);
+            }
+        }else{
+
+        JOptionPane.showMessageDialog(frame, "Quantidade de VOTOS insuficiente para gerar o gráfico", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnGraficoActionPerformed
+
+    /**
+     * Método para iniciar a votação com apenas a tela dos numeros e Vereador
+     * visiveis.
+     */
     private void iniciarVotacao() {
         jPanelInfoVereador.setVisible(true);
         lblNome.setVisible(false);
@@ -1017,6 +1080,12 @@ public class UrnaSwing extends javax.swing.JFrame {
         jPanel1.setVisible(false);
     }
 
+    /**
+     * Método responsavél por imprimir o partido informado pelo eleitor, usando
+     * um try catch caso o eleitor informe um partido invalido tornando asism o
+     * voto nulo e notificando o eleitor.
+     *
+     */
     private void imprimirPartido() {
         try {
             auxCandidato = service.getInfoPartido(Integer.parseInt(numeroCandidato.toString()));
@@ -1030,6 +1099,12 @@ public class UrnaSwing extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Método responsavél por imprimir o candidato informado pelo eleitor,
+     * usando um try catch caso o eleitor informe um candidato invalido tornando
+     * asism o voto nulo e notificando o eleitor.
+     *
+     */
     private void imprimirCandidato() {
         try {
             auxCandidato = service.getInfoCandidatos(Integer.parseInt(numeroCandidato.toString()));
@@ -1052,6 +1127,10 @@ public class UrnaSwing extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Método para limpar todos os campos inseridos e visiveis, idendtico ao
+     * inicio da votação.
+     */
     private void corrigir() {
 
         txtNumero.setText("");
@@ -1076,6 +1155,12 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblVereadora.setVisible(false);
     }
 
+    /**
+     * Método responsavel por testar o indice dos candidatos e inserindo-os na
+     * tela em sua ordem digitada.
+     *
+     * @param auxNumCandidato
+     */
     private void testarIndiceNumeroCandidato(String auxNumCandidato) {
         if (txtNumero.getText().equals("")) {
             tocarSom("SomTecla");
@@ -1122,6 +1207,10 @@ public class UrnaSwing extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Método responsavel por criar a Barra progressiva e deixar dinamica com o
+     * intuito de representar uma barra de carregamento.
+     */
     private class FinalizarVoto extends Thread {
 
         public void run() {
@@ -1158,7 +1247,10 @@ public class UrnaSwing extends javax.swing.JFrame {
 
     }
 
-    
+    /**
+     * Método responsavel por imprimir o resultado final da votação, com o mesmo
+     * esquema anterior da barra progressiva.
+     */
     private class ImprimirResultado extends Thread {
 
         public void run() {
@@ -1168,30 +1260,30 @@ public class UrnaSwing extends javax.swing.JFrame {
             do {
                 jProgressBar.setValue(jProgressBar.getValue() + 1);
                 jProgressBar.setStringPainted(true);
-                if(jProgressBar.getValue() < 250){
+                if (jProgressBar.getValue() < 250) {
                     lblCarregando.setText("Carregando......");
-                }
-                else if(jProgressBar.getValue() >= 250 && jProgressBar.getValue() < 750){
+                } else if (jProgressBar.getValue() >= 250 && jProgressBar.getValue() < 450) {
                     lblCarregando.setText("Calculando os votos......");
-                }
-                else{
+                } else if (jProgressBar.getValue() >= 450 && jProgressBar.getValue() < 850) {
+                    lblCarregando.setText("Gerando gráfico......");
+                } else {
                     lblCarregando.setText("Fechando conexão com o banco de dados......");
                 }
-                
+
                 try {
                     if (jProgressBar.getValue() < 200 || (jProgressBar.getValue() < 850 && jProgressBar.getValue() >= 500)) {
                         sleep(9);
-                        
+
                     }
                     if (jProgressBar.getValue() >= 700 || (jProgressBar.getValue() >= 200 && jProgressBar.getValue() < 500)) {
                         sleep(3);
-                        
+
                     }
 
                 } catch (InterruptedException ex) {
                 }
             } while (jProgressBar.getValue() < jProgressBar.getMaximum());
-            
+
             try {
                 lblCarregando.setText("Imprimindo......");
                 sleep(2000);
@@ -1204,7 +1296,11 @@ public class UrnaSwing extends javax.swing.JFrame {
         }
 
     }
-    
+
+    /**
+     * Método para mudar a interface assim possibilitando a visualização da tela
+     * de impressao do resultado da votação.
+     */
     private void setVisibleFinal() {
         jProgressBar.setVisible(true);
         jProgressBar.setValue(0);
@@ -1225,6 +1321,10 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblVereadora.setVisible(false);
     }
 
+    /**
+     * Método onde faz a criacção de uma lista com todos os candidatos
+     * atualizados para a impressao.
+     */
     private void criarListCandidatos() {
         for (int i = 91000; i < 96000; i += 1000) {
             for (int j = 1; j < 4; j++) {
@@ -1233,52 +1333,90 @@ public class UrnaSwing extends javax.swing.JFrame {
         }
     }
 
-    private String calcularPorcentagem(double votoCandidato) {
+    /**
+     * Métodos para calcular a porcentagem dos candidatos e dos votos nulos e
+     * brancos.
+     *
+     * @param voto
+     * @return
+     */
+    public String calcularPorcentagemCandidatos(double voto) {
 
-        return new DecimalFormat("0.00").format((votoCandidato / votos.getTotalVotos()) * 100);
+        return new DecimalFormat("0.00").format((voto / (votos.getTotalVotos()
+                - votos.getVotosBrancos() - votos.getVotosNulos())) * 100);
     }
 
-    private void mostrarResultadoFinal() {
+    public String calcularPorcentagemVotosAdicionais(double voto) {
+
+        return new DecimalFormat("0.00").format((voto / votos.getTotalVotos()) * 100);
+    }
+
+    /**
+     * Método para ordenar em ordem decrescente de votos dos candidatos.
+     *
+     * @return
+     */
+    public ArrayList ordenarLista() {
         ArrayList<CandidatosVO> listaOrdenada = (ArrayList<CandidatosVO>) listCandidato.stream()
                 .sorted(Comparator.comparing(CandidatosVO::getVotos).reversed())
                 .collect(Collectors.toList());
+        return listaOrdenada;
+    }
+
+    /**
+     * Método responsavel por mostrar na tela final de impressao os candidatos
+     * em ordem de partido e votos decrescentes, alem de mostrar em foco o
+     * candidato eleito, quantidade de votos, votos nulos e brancos.
+     */
+    private void mostrarResultadoFinal() {
+        ArrayList<CandidatosVO> listaOrdenada = ordenarLista();
 
         for (CandidatosVO candidato : listaOrdenada) {
             switch (candidato.getNumPartido()) {
                 case 91:
 
                     impressaoFinal1.append(candidato.toString());
-                    impressaoFinal1.append("\t(");
-                    impressaoFinal1.append(calcularPorcentagem(candidato.getVotos()));
-                    impressaoFinal1.append("%)");
+                    if (votos.getTotalVotos() > 0) {
+                        impressaoFinal1.append("\t(");
+                        impressaoFinal1.append(calcularPorcentagemCandidatos(candidato.getVotos()));
+                        impressaoFinal1.append("%)");
+                    }
                     impressaoFinal1.append("\n\n");
                     break;
                 case 92:
                     impressaoFinal2.append(candidato.toString());
-                    impressaoFinal2.append("\t(");
-                    impressaoFinal2.append(calcularPorcentagem(candidato.getVotos()));
-                    impressaoFinal2.append("%)");
+                    if (votos.getTotalVotos() > 0) {
+                        impressaoFinal2.append("\t(");
+                        impressaoFinal2.append(calcularPorcentagemCandidatos(candidato.getVotos()));
+                        impressaoFinal2.append("%)");
+                    }
                     impressaoFinal2.append("\n\n");
                     break;
                 case 93:
                     impressaoFinal3.append(candidato.toString());
-                    impressaoFinal3.append("\t(");
-                    impressaoFinal3.append(calcularPorcentagem(candidato.getVotos()));
-                    impressaoFinal3.append("%)");
+                    if (votos.getTotalVotos() > 0) {
+                        impressaoFinal3.append("\t(");
+                        impressaoFinal3.append(calcularPorcentagemCandidatos(candidato.getVotos()));
+                        impressaoFinal3.append("%)");
+                    }
                     impressaoFinal3.append("\n\n");
                     break;
                 case 94:
                     impressaoFinal4.append(candidato.toString());
-                    impressaoFinal4.append("\t(");
-                    impressaoFinal4.append(calcularPorcentagem(candidato.getVotos()));
-                    impressaoFinal4.append("%)");
+                    if (votos.getTotalVotos() > 0) {
+                        impressaoFinal4.append("\t(");
+                        impressaoFinal4.append(calcularPorcentagemCandidatos(candidato.getVotos()));
+                        impressaoFinal4.append("%)");
+                    }
                     impressaoFinal4.append("\n\n");
                     break;
                 case 95:
                     impressaoFinal5.append(candidato.toString());
-                    impressaoFinal5.append("\t(");
-                    impressaoFinal5.append(calcularPorcentagem(candidato.getVotos()));
-                    impressaoFinal5.append("%)");
+                    if (votos.getTotalVotos() > 0) {
+                        impressaoFinal5.append("\t(");
+                        impressaoFinal5.append(calcularPorcentagemCandidatos(candidato.getVotos()));
+                        impressaoFinal5.append("%)");
+                    }
                     impressaoFinal5.append("\n\n");
                     break;
                 default:
@@ -1291,12 +1429,18 @@ public class UrnaSwing extends javax.swing.JFrame {
         jTextFinal2.setText(impressaoFinal3.toString());
         jTextFinal3.setText(impressaoFinal4.toString());
         jTextFinal4.setText(impressaoFinal5.toString());
+
         if (votos.getTotalVotos() > 0) {
-            lblCandidatoEleito.setText(listaOrdenada.get(0).getNome() + "   " + "(" + calcularPorcentagem(listaOrdenada.get(0).getVotos()) + "%)");
+            lblCandidatoEleito.setText(listaOrdenada.get(0).getNome() + "   " + "(" + calcularPorcentagemCandidatos(listaOrdenada.get(0).getVotos()) + "%)");
+            lblVotosApurados.setText("" + votos.getTotalVotos());
+            lblVotosBrancos.setText("" + votos.getVotosBrancos() + "(" + calcularPorcentagemVotosAdicionais(votos.getVotosBrancos()) + "%)");
+            lblVotosNulos.setText("" + votos.getVotosNulos() + "(" + calcularPorcentagemVotosAdicionais(votos.getVotosNulos()) + "%)");
+        } else {
+            lblVotosApurados.setText("" + votos.getTotalVotos());
+            lblVotosBrancos.setText("" + votos.getVotosBrancos());
+            lblVotosNulos.setText("" + votos.getVotosNulos());
         }
-        lblVotosApurados.setText("" + votos.getTotalVotos());
-        lblVotosBrancos.setText("" + votos.getVotosBrancos());
-        lblVotosNulos.setText("" + votos.getVotosNulos());
+
         jPanel1.setVisible(true);
         jTeclado.setVisible(false);
         jPanelInfoVereador.setVisible(false);
@@ -1304,6 +1448,12 @@ public class UrnaSwing extends javax.swing.JFrame {
         jScrollPane1.setVisible(true);
     }
 
+    /**
+     * Método responsavel por adicionar um som quando se preciona as teclas da
+     * urna e na finalização de cada voto.
+     *
+     * @param nomeSom
+     */
     private void tocarSom(String nomeSom) {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(new File("").getAbsoluteFile() + "/Arquivos/audios/" + nomeSom + ".wav").getAbsoluteFile());
@@ -1353,6 +1503,7 @@ public class UrnaSwing extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLayeredPane Camadas;
+    private javax.swing.JButton btnGrafico;
     private javax.swing.JPanel jInfoConfirma;
     private javax.swing.JPanel jNumeros;
     private javax.swing.JPanel jPanel1;

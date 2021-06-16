@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Interface gráfica criada com o intuido de representar os "santinhos" das eleições
  */
 package br.com.poo.mongo.presentation;
 
@@ -19,7 +17,8 @@ public class Santinho extends javax.swing.JFrame {
      */
     public Santinho() {
         initComponents();
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/justiçaEleitoralLogoMini.png"));
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage("" + new File("").getAbsoluteFile() + //Método para alterar o icone do JFrame
+                "/Arquivos/images/urna/justiçaEleitoralLogoMini.png"));
     }
 
     /**

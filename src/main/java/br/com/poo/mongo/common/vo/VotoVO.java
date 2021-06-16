@@ -1,13 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**Classe responsável por guardar na memória os votos nulos,
+ * brancos e fazer a contabilização de todos os votos
  */
 package br.com.poo.mongo.common.vo;
 
 /**
+ * @author Nirton Afonso
  *
- * @author nirto
  */
 public class VotoVO {
     private int votosBrancos;

@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/** Classe criada com o intuito de servir como proxy da comunicação do Banco de Dados (MongoDB)
+ * com a interface gráfica e as outras classes
  */
 package br.com.poo.mongo.service;
 
@@ -13,21 +11,19 @@ import br.com.poo.mongo.common.vo.VotoVO;
 import br.com.poo.mongo.persistence.Votacao;
 
 /**
+ * @author Nirton Afonso
  *
- * @author nirto
  */
 public class ServiceCandidato {
 
     Votacao votacao = new Votacao();
-   
-    
 
     public CandidatosVO getInfoCandidatos(int numero) throws CandidatoInexistenteExcepition {
 
         if (votacao.getInfoCandidatos(numero) == null) {
             throw new CandidatoInexistenteExcepition("CANDIDATO INEXISTENTE");
         }
-        
+
         return votacao.getInfoCandidatos(numero);
     }
 
@@ -42,11 +38,10 @@ public class ServiceCandidato {
 
     public VotoVO votar(int numero) throws VotarCandidatoInexistenteException {
         VotoVO votos = new VotoVO();
-        if (votacao.votar(numero)==null) {
+        if (votacao.votar(numero) == null) {
             throw new VotarCandidatoInexistenteException();
         }
         return votos;
     }
-
 
 }
