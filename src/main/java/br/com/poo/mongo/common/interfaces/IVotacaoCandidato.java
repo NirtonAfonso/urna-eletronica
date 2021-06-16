@@ -6,6 +6,7 @@
 package br.com.poo.mongo.common.interfaces;
 
 import br.com.poo.mongo.common.vo.CandidatosVO;
+import br.com.poo.mongo.common.vo.VotoVO;
 
 /**
  *
@@ -13,5 +14,7 @@ import br.com.poo.mongo.common.vo.CandidatosVO;
  */
 public interface IVotacaoCandidato {
     
-    public int votar(int numero);
+    public VotoVO votar(int numero);
+    
+    
 }

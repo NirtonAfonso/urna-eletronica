@@ -7,9 +7,10 @@ package br.com.poo.mongo.service;
 
 import br.com.poo.mongo.common.exception.CandidatoInexistenteExcepition;
 import br.com.poo.mongo.common.exception.NumeroErradoException;
+import br.com.poo.mongo.common.exception.VotarCandidatoInexistenteException;
 import br.com.poo.mongo.common.vo.CandidatosVO;
+import br.com.poo.mongo.common.vo.VotoVO;
 import br.com.poo.mongo.persistence.Votacao;
-import br.com.poo.mongo.presentation.ResultadoVotacao;
 
 /**
  *
@@ -18,6 +19,7 @@ import br.com.poo.mongo.presentation.ResultadoVotacao;
 public class ServiceCandidato {
 
     Votacao votacao = new Votacao();
+   
     
 
     public CandidatosVO getInfoCandidatos(int numero) throws CandidatoInexistenteExcepition {
@@ -25,6 +27,7 @@ public class ServiceCandidato {
         if (votacao.getInfoCandidatos(numero) == null) {
             throw new CandidatoInexistenteExcepition("CANDIDATO INEXISTENTE");
         }
+        
         return votacao.getInfoCandidatos(numero);
     }
 
@@ -37,8 +40,13 @@ public class ServiceCandidato {
         return votacao.getInfoPartido(numero);
     }
 
-    public int votar(int numero) {
-        return votacao.votar(numero);
+    public VotoVO votar(int numero) throws VotarCandidatoInexistenteException {
+        VotoVO votos = new VotoVO();
+        if (votacao.votar(numero)==null) {
+            throw new VotarCandidatoInexistenteException();
+        }
+        return votos;
     }
+
 
 }

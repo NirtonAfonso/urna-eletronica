@@ -9,7 +9,7 @@ package br.com.poo.mongo.common.exception;
  *
  * @author nirto
  */
-public class CandidatoInexistenteExcepition extends Exception{
+public class CandidatoInexistenteExcepition extends RuntimeException{
 
     public CandidatoInexistenteExcepition(String message) {
         super(message);

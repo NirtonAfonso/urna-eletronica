@@ -8,7 +8,7 @@ package br.com.poo.mongo.persistence;
 import br.com.poo.mongo.common.interfaces.IChecagemCandidato;
 import br.com.poo.mongo.common.interfaces.IVotacaoCandidato;
 import br.com.poo.mongo.common.vo.CandidatosVO;
-import br.com.poo.mongo.common.vo.VotosVO;
+import br.com.poo.mongo.common.vo.VotoVO;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -26,89 +26,80 @@ import java.util.List;
 public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
 
     private int votoCandidato;
-    VotosVO votos = new VotosVO();
-    List<CandidatosVO> listCandidato = new ArrayList<>();
+   // private VotoVO votos = new VotoVO();
+    
 
     public Votacao() {
         iniciarVotacao();
-        createCandidatoList();
+
     }
 
     public DBCollection conexao() {
         MongoClient client = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
         DB bancoUrna = client.getDB("poo");
-        DBCollection candidato = bancoUrna.getCollection("candidatos");
-        return candidato;
+        DBCollection bdCandidato = bancoUrna.getCollection("candidatos");
+        return bdCandidato;
     }
 
     public void iniciarVotacao() {
         conexao().updateMulti(new BasicDBObject("votos", new BasicDBObject("$gte", 0)), new BasicDBObject("$set", new BasicDBObject("votos", 0)));
     }
 
-    public void createCandidatoList() {
-        try (DBCursor cursor = conexao().find()) {
-
-            while (cursor.hasNext()) {
-                listCandidato.add(new CandidatosVO());
-            }
-            
-        }
-        
-    }
-
     @Override
     public CandidatosVO getInfoCandidatos(int numero) {
-
+        
         try (DBCursor cursor = conexao().find(new BasicDBObject("numero", numero))) {
             DBObject infoCandidato = cursor.one();
+            CandidatosVO candidato = new CandidatosVO();
 
             if (infoCandidato == null) {
                 return null;
             }
-            for (CandidatosVO candidato : listCandidato) {
-                if (candidato.getNumeroCandidato() == numero) {
-                    return candidato;
-                }
-                candidato.setNome((String) infoCandidato.get("nome"));
-                candidato.setNumeroCandidato(((Double) infoCandidato.get("numero")).intValue());
-            }
-
-            return null;
+            candidato.setNome((String) infoCandidato.get("nome"));
+            candidato.setNumeroCandidato(((Double) infoCandidato.get("numero")).intValue());
+            candidato.setVotos((int)(infoCandidato.get("votos")));
+            candidato.setPartido((String) infoCandidato.get("nomePartido"));
+            candidato.setNumPartido(((Double) infoCandidato.get("numeroPartido")).intValue());
+            return candidato;
         }
 
     }
 
     @Override
     public CandidatosVO getInfoPartido(int numero) {
-
+        //CandidatosVO candidato = new CandidatosVO();
         try (DBCursor cursor = conexao().find(new BasicDBObject("numeroPartido", numero))) {
             DBObject infoCandidato = cursor.one();
+            CandidatosVO candidato = new CandidatosVO();
 
             if (infoCandidato == null) {
                 return null;
             }
-            CandidatosVO vo = new CandidatosVO();
 
-            vo.setPartido((String) infoCandidato.get("nomePartido"));
-            vo.setNumPartido(((Double) infoCandidato.get("numeroPartido")).intValue());
-            return vo;
+            candidato.setPartido((String) infoCandidato.get("nomePartido"));
+            candidato.setNumPartido(((Double) infoCandidato.get("numeroPartido")).intValue());
+            return candidato;
+
         }
 
     }
 
     @Override
-    public int votar(int numero) {
+    public VotoVO votar(int numero) {
         try (DBCursor cursor = conexao().find(new BasicDBObject("numero", numero))) {
             DBObject infoCandidato = cursor.one();
+            CandidatosVO candidato = new CandidatosVO();
+            VotoVO votos = new VotoVO();
 
+            if (infoCandidato == null) {
+                return null;
+            }
             this.votoCandidato = Integer.parseInt(infoCandidato.get("votos").toString());
             this.votoCandidato++;
-
+            
+            candidato.setVotos((int)(infoCandidato.get("votos")));
             conexao().update(new BasicDBObject("numero", numero), new BasicDBObject("$set", new BasicDBObject("votos", votoCandidato)));
-
-            return votoCandidato;
+            return votos;
         }
-
     }
-
 }

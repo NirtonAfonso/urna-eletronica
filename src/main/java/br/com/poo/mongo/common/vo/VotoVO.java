@@ -9,33 +9,33 @@ package br.com.poo.mongo.common.vo;
  *
  * @author nirto
  */
-public class VotosVO {
+public class VotoVO {
     private int votosBrancos;
-    private int votosNumos;
+    private int votosNulos;
     private int totalVotos;
 
     public int getVotosBrancos() {
         return votosBrancos;
     }
 
-    public void setVotosBrancos(int votosBrancos) {
-        this.votosBrancos = votosBrancos;
+    public void votarBranco() {
+        this.votosBrancos++;
     }
 
-    public int getVotosNumos() {
-        return votosNumos;
+    public int getVotosNulos() {
+        return votosNulos;
     }
 
-    public void setVotosNumos(int votosNumos) {
-        this.votosNumos = votosNumos;
+    public void votarNulo() {
+        this.votosNulos++;
     }
 
     public int getTotalVotos() {
         return totalVotos;
     }
 
-    public void setTotalVotos(int totalVotos) {
-        this.totalVotos = totalVotos;
+    public void somaTotalVotos() {
+        this.totalVotos++;
     }
     
     
