@@ -56,8 +56,23 @@ public class CandidatosVO extends PartidoVO {
         return votos;
     }
 
-    public void receberVoto() {
-        this.votos++;
+    public void setVotos(int votos) {
+        this.votos = votos;
+    }
+
+    
+    @Override
+    public String toString(){
+        StringBuilder imprimirCandidatos = new StringBuilder();
+        
+        imprimirCandidatos.append("Candidato: ");
+        imprimirCandidatos.append(getNome());
+        imprimirCandidatos.append("\n");
+        imprimirCandidatos.append("Votos: ");
+        imprimirCandidatos.append(getVotos());
+        imprimirCandidatos.append("");
+        
+        return imprimirCandidatos.toString();
     }
 
     

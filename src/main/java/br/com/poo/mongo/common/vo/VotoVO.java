@@ -9,7 +9,7 @@ package br.com.poo.mongo.common.vo;
  *
  * @author nirto
  */
-public class VotosVO {
+public class VotoVO {
     private int votosBrancos;
     private int votosNulos;
     private int totalVotos;

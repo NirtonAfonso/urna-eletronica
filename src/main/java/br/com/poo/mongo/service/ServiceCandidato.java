@@ -9,7 +9,7 @@ import br.com.poo.mongo.common.exception.CandidatoInexistenteExcepition;
 import br.com.poo.mongo.common.exception.NumeroErradoException;
 import br.com.poo.mongo.common.exception.VotarCandidatoInexistenteException;
 import br.com.poo.mongo.common.vo.CandidatosVO;
-import br.com.poo.mongo.common.vo.VotosVO;
+import br.com.poo.mongo.common.vo.VotoVO;
 import br.com.poo.mongo.persistence.Votacao;
 
 /**
@@ -19,7 +19,7 @@ import br.com.poo.mongo.persistence.Votacao;
 public class ServiceCandidato {
 
     Votacao votacao = new Votacao();
-    private VotosVO votos = new VotosVO();
+   
     
 
     public CandidatosVO getInfoCandidatos(int numero) throws CandidatoInexistenteExcepition {
@@ -40,29 +40,13 @@ public class ServiceCandidato {
         return votacao.getInfoPartido(numero);
     }
 
-    public VotosVO votar(int numero) throws VotarCandidatoInexistenteException {
+    public VotoVO votar(int numero) throws VotarCandidatoInexistenteException {
+        VotoVO votos = new VotoVO();
         if (votacao.votar(numero)==null) {
             throw new VotarCandidatoInexistenteException();
         }
         return votos;
     }
 
-    /*public VotosVO votarNulo() {
-
-        votos.setVotosNulos(votos.getVotosNulos() + 1);
-        votos.setTotalVotos(votos.getTotalVotos() + 1);
-
-        return votos;
-
-    }
-
-    public VotosVO votarBranco() {
-
-        votos.setVotosBrancos(votos.getVotosBrancos() + 1);
-        votos.setTotalVotos(votos.getTotalVotos() + 1);
-
-        return votos;
-
-    }*/
 
 }

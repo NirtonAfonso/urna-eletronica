@@ -8,7 +8,7 @@ package br.com.poo.mongo.persistence;
 import br.com.poo.mongo.common.interfaces.IChecagemCandidato;
 import br.com.poo.mongo.common.interfaces.IVotacaoCandidato;
 import br.com.poo.mongo.common.vo.CandidatosVO;
-import br.com.poo.mongo.common.vo.VotosVO;
+import br.com.poo.mongo.common.vo.VotoVO;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -26,8 +26,8 @@ import java.util.List;
 public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
 
     private int votoCandidato;
-    private VotosVO votos = new VotosVO();
-    private CandidatosVO candidato = new CandidatosVO();
+   // private VotoVO votos = new VotoVO();
+    
 
     public Votacao() {
         iniciarVotacao();
@@ -50,12 +50,16 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
         
         try (DBCursor cursor = conexao().find(new BasicDBObject("numero", numero))) {
             DBObject infoCandidato = cursor.one();
+            CandidatosVO candidato = new CandidatosVO();
 
             if (infoCandidato == null) {
                 return null;
             }
             candidato.setNome((String) infoCandidato.get("nome"));
             candidato.setNumeroCandidato(((Double) infoCandidato.get("numero")).intValue());
+            candidato.setVotos((int)(infoCandidato.get("votos")));
+            candidato.setPartido((String) infoCandidato.get("nomePartido"));
+            candidato.setNumPartido(((Double) infoCandidato.get("numeroPartido")).intValue());
             return candidato;
         }
 
@@ -66,6 +70,7 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
         //CandidatosVO candidato = new CandidatosVO();
         try (DBCursor cursor = conexao().find(new BasicDBObject("numeroPartido", numero))) {
             DBObject infoCandidato = cursor.one();
+            CandidatosVO candidato = new CandidatosVO();
 
             if (infoCandidato == null) {
                 return null;
@@ -80,16 +85,19 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
     }
 
     @Override
-    public VotosVO votar(int numero) {
+    public VotoVO votar(int numero) {
         try (DBCursor cursor = conexao().find(new BasicDBObject("numero", numero))) {
             DBObject infoCandidato = cursor.one();
+            CandidatosVO candidato = new CandidatosVO();
+            VotoVO votos = new VotoVO();
 
             if (infoCandidato == null) {
                 return null;
             }
             this.votoCandidato = Integer.parseInt(infoCandidato.get("votos").toString());
             this.votoCandidato++;
-
+            
+            candidato.setVotos((int)(infoCandidato.get("votos")));
             conexao().update(new BasicDBObject("numero", numero), new BasicDBObject("$set", new BasicDBObject("votos", votoCandidato)));
             return votos;
         }
