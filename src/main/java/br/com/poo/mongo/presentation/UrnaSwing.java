@@ -42,6 +42,7 @@ public class UrnaSwing extends javax.swing.JFrame {
     private StringBuilder impressaoFinal5 = new StringBuilder();
     private StringBuilder numeroCandidato;
     boolean votoBranco;
+    private Santinho santinho = new Santinho();
 
     /**
      * Creates new form UrnaSwing
@@ -79,6 +80,7 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblVotoBranco = new javax.swing.JLabel();
         lblSeuVoto = new javax.swing.JLabel();
         lblMensageTipoVoto = new javax.swing.JLabel();
+        lblCarregando = new javax.swing.JLabel();
         UIManager.put("jProgressBar.background", new java.awt.Color(0,153,0));
         jProgressBar = new javax.swing.JProgressBar();
         jNumeros = new javax.swing.JPanel();
@@ -93,6 +95,7 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblInfoCorrige = new javax.swing.JLabel();
         lblTela = new javax.swing.JLabel();
         jTeclado = new javax.swing.JPanel();
+        lblAjuda = new javax.swing.JLabel();
         lblN1 = new javax.swing.JLabel();
         lblN2 = new javax.swing.JLabel();
         lblN3 = new javax.swing.JLabel();
@@ -232,6 +235,13 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblMensageTipoVoto.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
         lblMensageTipoVoto.setText(bundle.getString("UrnaSwing.lblMensageTipoVoto.text")); // NOI18N
         jPanelInfoVereador.add(lblMensageTipoVoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 410, 350, 50));
+
+        lblCarregando.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
+        lblCarregando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblCarregando.setText(bundle.getString("UrnaSwing.lblCarregando.text")); // NOI18N
+        lblCarregando.setAutoscrolls(true);
+        lblCarregando.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanelInfoVereador.add(lblCarregando, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 405, 400, 20));
 
         jProgressBar.setBackground(new java.awt.Color(0, 153, 0));
         jProgressBar.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
@@ -397,6 +407,15 @@ public class UrnaSwing extends javax.swing.JFrame {
         jTeclado.setMinimumSize(new java.awt.Dimension(324, 588));
         jTeclado.setPreferredSize(new java.awt.Dimension(324, 588));
         jTeclado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblAjuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/arquivo/images/urna/ajuda.jpg"))); // NOI18N
+        lblAjuda.setText(bundle.getString("UrnaSwing.lblAjuda.text")); // NOI18N
+        lblAjuda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAjudaMouseClicked(evt);
+            }
+        });
+        jTeclado.add(lblAjuda, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 100, -1, -1));
 
         lblN1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblN1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/arquivo/images/urna/n1.jpg"))); // NOI18N
@@ -667,7 +686,7 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblVotosBrancos.setText(bundle.getString("UrnaSwing.lblVotosBrancos.text")); // NOI18N
         lblVotosBrancos.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
-        lblCandidatoEleito.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        lblCandidatoEleito.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblCandidatoEleito.setForeground(new java.awt.Color(255, 0, 0));
         lblCandidatoEleito.setText(bundle.getString("UrnaSwing.lblCandidatoEleito.text")); // NOI18N
 
@@ -688,10 +707,6 @@ public class UrnaSwing extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblApuracaoVotos, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(320, 320, 320))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -717,13 +732,13 @@ public class UrnaSwing extends javax.swing.JFrame {
                         .addComponent(lblPartido94)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(lblTitleCandidatoEleito)
                                 .addGap(18, 18, 18)
-                                .addComponent(lblCandidatoEleito, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(lblCandidatoEleito, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblTotalVotosApurados)
@@ -740,11 +755,15 @@ public class UrnaSwing extends javax.swing.JFrame {
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(lblVotosBrancos, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(lblVotosNulos, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                        .addContainerGap(72, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addComponent(lblPartido95, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblApuracaoVotos, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(320, 320, 320))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -938,8 +957,7 @@ public class UrnaSwing extends javax.swing.JFrame {
         lblConfirma.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/confirma_down.jpg"));
 
         if (numeroCandidato.toString().equals("99999")) {
-            criarListCandidatos();
-            mostrarResultadoFinal();
+           new ImprimirResultado().start();
             return;
         }
         if (votoBranco) {
@@ -964,6 +982,13 @@ public class UrnaSwing extends javax.swing.JFrame {
     private void lblConfirmaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblConfirmaMouseReleased
         lblConfirma.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/confirma.jpg"));
     }//GEN-LAST:event_lblConfirmaMouseReleased
+
+    private void lblAjudaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAjudaMouseClicked
+        santinho = new Santinho();
+        santinho.setLocationRelativeTo(null);
+        santinho.setVisible(true);
+        santinho.setResizable(false);
+    }//GEN-LAST:event_lblAjudaMouseClicked
 
     private void iniciarVotacao() {
         jPanelInfoVereador.setVisible(true);
@@ -1102,6 +1127,7 @@ public class UrnaSwing extends javax.swing.JFrame {
         public void run() {
 
             setVisibleFinal();
+            jProgressBar.setMaximum(100);
             do {
                 jProgressBar.setValue(jProgressBar.getValue() + 1);
                 jProgressBar.setStringPainted(true);
@@ -1115,7 +1141,7 @@ public class UrnaSwing extends javax.swing.JFrame {
 
                 } catch (InterruptedException ex) {
                 }
-            } while (jProgressBar.getValue() < 100);
+            } while (jProgressBar.getValue() < jProgressBar.getMaximum());
             tocarSom("fim");
             lblFim.setVisible(true);
             jProgressBar.setVisible(false);
@@ -1132,6 +1158,53 @@ public class UrnaSwing extends javax.swing.JFrame {
 
     }
 
+    
+    private class ImprimirResultado extends Thread {
+
+        public void run() {
+
+            setVisibleFinal();
+            jProgressBar.setMaximum(1000);
+            do {
+                jProgressBar.setValue(jProgressBar.getValue() + 1);
+                jProgressBar.setStringPainted(true);
+                if(jProgressBar.getValue() < 250){
+                    lblCarregando.setText("Carregando......");
+                }
+                else if(jProgressBar.getValue() >= 250 && jProgressBar.getValue() < 750){
+                    lblCarregando.setText("Calculando os votos......");
+                }
+                else{
+                    lblCarregando.setText("Fechando conexão com o banco de dados......");
+                }
+                
+                try {
+                    if (jProgressBar.getValue() < 200 || (jProgressBar.getValue() < 850 && jProgressBar.getValue() >= 500)) {
+                        sleep(9);
+                        
+                    }
+                    if (jProgressBar.getValue() >= 700 || (jProgressBar.getValue() >= 200 && jProgressBar.getValue() < 500)) {
+                        sleep(3);
+                        
+                    }
+
+                } catch (InterruptedException ex) {
+                }
+            } while (jProgressBar.getValue() < jProgressBar.getMaximum());
+            
+            try {
+                lblCarregando.setText("Imprimindo......");
+                sleep(2000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(UrnaSwing.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            criarListCandidatos();
+            mostrarResultadoFinal();
+
+        }
+
+    }
+    
     private void setVisibleFinal() {
         jProgressBar.setVisible(true);
         jProgressBar.setValue(0);
@@ -1218,7 +1291,9 @@ public class UrnaSwing extends javax.swing.JFrame {
         jTextFinal2.setText(impressaoFinal3.toString());
         jTextFinal3.setText(impressaoFinal4.toString());
         jTextFinal4.setText(impressaoFinal5.toString());
-        lblCandidatoEleito.setText(listaOrdenada.get(0).getNome() + "   " + "(" + calcularPorcentagem(listaOrdenada.get(0).getVotos()) + "%)");
+        if (votos.getTotalVotos() > 0) {
+            lblCandidatoEleito.setText(listaOrdenada.get(0).getNome() + "   " + "(" + calcularPorcentagem(listaOrdenada.get(0).getVotos()) + "%)");
+        }
         lblVotosApurados.setText("" + votos.getTotalVotos());
         lblVotosBrancos.setText("" + votos.getVotosBrancos());
         lblVotosNulos.setText("" + votos.getVotosNulos());
@@ -1294,10 +1369,12 @@ public class UrnaSwing extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextFinal2;
     private javax.swing.JTextArea jTextFinal3;
     private javax.swing.JTextArea jTextFinal4;
+    private javax.swing.JLabel lblAjuda;
     private javax.swing.JLabel lblApuracaoVotos;
     private javax.swing.JLabel lblBaixoTec;
     private javax.swing.JLabel lblBranco;
     private javax.swing.JLabel lblCandidatoEleito;
+    private javax.swing.JLabel lblCarregando;
     private javax.swing.JLabel lblConfirma;
     private javax.swing.JLabel lblCorrige;
     private javax.swing.JLabel lblFaixaDireita;
