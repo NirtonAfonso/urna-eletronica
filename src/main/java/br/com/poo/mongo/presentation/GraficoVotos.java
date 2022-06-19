@@ -1,6 +1,3 @@
-/** Interface gráfica com o intuito de criar um grafico de barras, com o JFreeChart,
- * para melhor visualição da apuração dos votos
- */
 package br.com.poo.mongo.presentation;
 
 import br.com.poo.mongo.common.vo.CandidatosVO;
@@ -18,12 +15,17 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
+ * Interface gráfica com o intuito de criar um grafico de barras, com o JFreeChart,
+ * para melhor visualição da apuração dos votos
+ * 
  * @author Nirton Afonso
  *
  */
 public class GraficoVotos extends JFrame {
 
-    //Criação da nova tela que irá mostrar o grafico
+    /**
+     * Criação da nova tela que irá mostrar o grafico
+     */
     public GraficoVotos() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle("Gráfico de Contabilização dos Votos");
@@ -37,7 +39,7 @@ public class GraficoVotos extends JFrame {
     /**
      * Método para fazer a criação do gráfico, tendo como referência a lista de
      * candidatos ordenada por quantidade decrescente de votos recebidos por
-     * candidato e a classe VotosVO onde se tem a quantidade total de votos,
+     * candidato e a classe {@code VotosVO} onde se tem a quantidade total de votos,
      * votos brancos e nulos.
      *
      * @param listCandidatos
@@ -49,7 +51,8 @@ public class GraficoVotos extends JFrame {
              
             DefaultCategoryDataset barra = new DefaultCategoryDataset(); //Para se obter as barras do gráfico, precisamos criar um Dataset
             for (CandidatosVO listCandidato : listCandidatos) {         //Looping para poder percorrer toda a lista instanciada e adicionar no Dataset
-                barra.setValue(listCandidato.getVotos(), listCandidato.getNome(), listCandidato.getPartido());
+                barra.setValue(listCandidato.getVotos(), 
+                               listCandidato.getNome(), listCandidato.getPartido());
             }
            
             barra.setValue(votos.getVotosBrancos(), "Votos Brancos", "BRANCOS");
@@ -89,7 +92,7 @@ public class GraficoVotos extends JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(UrnaSwing.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+       
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

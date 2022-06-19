@@ -1,7 +1,3 @@
-/**
- * Classe principal onde temos a comunicação realizada entre
- * o java e o Banco de Dados (MongoDB).
- */
 package br.com.poo.mongo.persistence;
 
 import br.com.poo.mongo.common.interfaces.IChecagemCandidato;
@@ -17,6 +13,9 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
 /**
+ * Classe principal onde temos a comunicação realizada entre
+ * o java e o Banco de Dados (MongoDB).
+ * 
  * @author Nirton Afonso
  *
  */
@@ -38,7 +37,7 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
     public DBCollection conexao() {
         MongoClient client = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
         DB bancoUrna = client.getDB("poo");
-        DBCollection bdCandidato = bancoUrna.getCollection("candidatos");
+        DBCollection bdCandidato = bancoUrna.getCollection("candidtos");
         return bdCandidato;
     }
 
@@ -49,7 +48,8 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
      * sair na vantagem.
      */
     public void iniciarVotacao() {
-        conexao().updateMulti(new BasicDBObject("votos", new BasicDBObject("$gte", 0)), new BasicDBObject("$set", new BasicDBObject("votos", 0)));
+        conexao().updateMulti(new BasicDBObject("votos", new BasicDBObject("$gte", 0)), 
+                              new BasicDBObject("$set", new BasicDBObject("votos", 0)));
     }
 
     /**
@@ -58,7 +58,7 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
      * do mesmo.
      *
      * @param numero
-     * @return
+     * @return candidato
      */
     @Override
     public CandidatosVO getInfoCandidatos(int numero) {
@@ -90,7 +90,7 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
      * mesmo.
      *
      * @param numero
-     * @return
+     * @return candidato
      */
     @Override
     public CandidatosVO getInfoPartido(int numero) {
@@ -119,7 +119,7 @@ public class Votacao implements IChecagemCandidato, IVotacaoCandidato {
      * de votos dentro do Banco.
      *
      * @param numero
-     * @return
+     * @return votos
      */
     @Override
     public VotoVO votar(int numero) {

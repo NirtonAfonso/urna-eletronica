@@ -1,6 +1,3 @@
-/** Classe criada com o intuito de servir como proxy da comunicação do Banco de Dados (MongoDB)
- * com a interface gráfica e as outras classes
- */
 package br.com.poo.mongo.service;
 
 import br.com.poo.mongo.common.exception.CandidatoInexistenteExcepition;
@@ -10,7 +7,9 @@ import br.com.poo.mongo.common.vo.CandidatosVO;
 import br.com.poo.mongo.common.vo.VotoVO;
 import br.com.poo.mongo.persistence.Votacao;
 
-/**
+/** 
+ * Classe criada com o intuito de servir como proxy da comunicação do Banco de Dados (MongoDB)
+ * com a interface gráfica e as outras classes
  * @author Nirton Afonso
  *
  */

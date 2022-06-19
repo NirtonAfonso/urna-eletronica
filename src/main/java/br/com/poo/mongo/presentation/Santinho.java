@@ -1,14 +1,12 @@
-/**
- * Interface gráfica criada com o intuido de representar os "santinhos" das eleições
- */
 package br.com.poo.mongo.presentation;
 
 import java.awt.Toolkit;
 import java.io.File;
 
 /**
- *
- * @author nirto
+ *Interface gráfica criada com o intuido de representar os "santinhos" das eleições
+ * 
+ * @author Nirton Afonso
  */
 public class Santinho extends javax.swing.JFrame {
 

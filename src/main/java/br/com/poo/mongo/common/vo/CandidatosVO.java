@@ -1,10 +1,9 @@
-/** Classe criada para receber os candidatos do Banco de dados e armazenar na memoria
- * através de um ArrayList para pooder fazer a manipulação dos votos
- *
- */
 package br.com.poo.mongo.common.vo;
 
 /**
+ * Classe criada para receber os candidatos do Banco de dados e armazenar na memoria
+ * através de um ArrayList para pooder fazer a manipulação dos votos
+ * 
  * @author Nirton Afonso
  *
  */

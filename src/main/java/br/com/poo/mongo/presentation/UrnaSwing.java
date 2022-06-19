@@ -1,8 +1,3 @@
-/**
- * Interfac principal da simulação de uma Urna Eletrônica
- * Nessa classe temos todas as coneções e métodos para o funcionamento do programa,
- * desde a alteração de imagens de candidatos, sons, chamada do gráfico.
- */
 package br.com.poo.mongo.presentation;
 
 import br.com.poo.mongo.common.exception.CandidatoInexistenteExcepition;
@@ -33,8 +28,12 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
+ * Interfac principal da simulação de uma Urna Eletrônica
+ * Nessa classe temos todas as coneções e métodos para o funcionamento do programa,
+ * desde a alteração de imagens de candidatos, sons, chamada do gráfico.
+ * 
  * @author Nirton Afonso
- *
+ * @version 1.0.1
  */
 public class UrnaSwing extends javax.swing.JFrame {
 
@@ -993,6 +992,7 @@ public class UrnaSwing extends javax.swing.JFrame {
     private void lblConfirmaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblConfirmaMousePressed
         lblConfirma.setIcon(new javax.swing.ImageIcon("" + new File("").getAbsoluteFile() + "/Arquivos/images/urna/confirma_down.jpg"));
 
+        
         if (numeroCandidato.toString().equals("99999")) {       //Condição para finalizar a votação e imprimir o resultado
             new ImprimirResultado().start();
             return;
@@ -1001,7 +1001,10 @@ public class UrnaSwing extends javax.swing.JFrame {
             votos.votarBranco();
             votos.somaTotalVotos();
         } else {
-            try {                                               //Try usado para saber se o voto vai para um candidato ou se vai ser um voto nulo
+            /**
+             * Try usado para saber se o voto vai para um candidato ou se vai ser um voto nulo
+             */
+            try {                                               
                 service.votar(Integer.parseInt(numeroCandidato.toString()));
                 votos.somaTotalVotos();
             } catch (VotarCandidatoInexistenteException ex) {

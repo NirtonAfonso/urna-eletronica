@@ -1,0 +1,6 @@
+br.com.poo.mongo.common.exception
+br.com.poo.mongo.common.interfaces
+br.com.poo.mongo.common.vo
+br.com.poo.mongo.persistence
+br.com.poo.mongo.presentation
+br.com.poo.mongo.service
