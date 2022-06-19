@@ -1,9 +1,9 @@
-/**Classe responsável por guardar na memória os votos nulos,
- * brancos e fazer a contabilização de todos os votos
- */
 package br.com.poo.mongo.common.vo;
 
 /**
+ * Classe responsável por guardar na memória os votos nulos,
+ * brancos e fazer a contabilização de todos os votos
+ * 
  * @author Nirton Afonso
  *
  */
